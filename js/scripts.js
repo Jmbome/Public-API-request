@@ -93,7 +93,7 @@ gridContainer.addEventListener('click', e => {
 });
 
 modalClose.addEventListener('click', () => {
-    modalContainer.remove();
+    modalContainer.classList.add('hidden');
     });
 
 
