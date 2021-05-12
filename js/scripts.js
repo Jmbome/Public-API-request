@@ -2,9 +2,7 @@
 let employees = [];
 const urlAPI = 'https://randomuser.me/api/?results=12&nat=us';
 const gridContainer = document.querySelector(".gallery");
-const modal = document.querySelector(".modal");
-const modalContainer = document.querySelector(".modal-container");
-const modalClose = document.querySelector(".modal-close-btn");
+const modal = document.querySelector("body");
 
 
 fetch(urlAPI)
@@ -46,7 +44,11 @@ function displayEmployees(employeeData) {
 
 
 function displayModal(index) {
-   
+    const modalClose = document.querySelector("#modal-close-btn");
+    console.log(modalClose);
+    const modalContainer = document.querySelector(".modal-container");
+    console.log(modalContainer);
+    let modalHTML="";
     // use object destructuring make our template literal cleaner
     let { email, location, name, phone, picture, dob, nat } = employees[index];
   let month = new Date(dob.date).getMonth();
@@ -54,8 +56,8 @@ function displayModal(index) {
   let year = new Date(dob.date).getFullYear();
 
   // Create the modal window
-  const modalHTML = `
-      <div class="modal-container">
+   modalHTML += `
+      <div class="modal-container ">
         <div class="modal">
             <button type="button" id="modal-close-btn" class="modal-close-btn"><strong>X</strong></button>
             <div class="modal-info-container">
@@ -78,10 +80,19 @@ function displayModal(index) {
 
     modalContainer.classList.remove("hidden");
     modalContainer.insertAdjacentHTML('beforeend',modalHTML);
+
+    modalClose.addEventListener('click', () => {
+        modalContainer.classList.add('hidden');
+        });
+
+
+
 }
 
 
 gridContainer.addEventListener('click', e => {
+
+    
     // make sure the click is not on the gridContainer itself
     if (e.target !== gridContainer) {
         // select the card element based on its proximity to actual element
@@ -90,10 +101,11 @@ gridContainer.addEventListener('click', e => {
         let index = card.getAttribute("data-index");
         displayModal(index);
     }
+
+ 
+
 });
 
-modalClose.addEventListener('click', () => {
-    modalContainer.classList.add('hidden');
-    });
+
 
 
