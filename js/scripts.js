@@ -1,10 +1,9 @@
 // global variables
 let employees = [];
-const urlAPI = `https://randomuser.me/api/?results=12&inc=name, picture,
-email, location, phone, dob &noinfo &nat=US`
+const urlAPI = 'https://randomuser.me/api/?results=12&nat=us';
 const gridContainer = document.querySelector(".gallery");
 const modal = document.querySelector(".modal");
-const modalContainer = document.querySelector("body");
+const modalContainer = document.querySelector(".modal-container");
 const modalClose = document.querySelector(".modal-close-btn");
 
 
@@ -47,34 +46,37 @@ function displayEmployees(employeeData) {
 
 
 function displayModal(index) {
+   
     // use object destructuring make our template literal cleaner
-    let { name, dob, phone, email, location: { city, street, state, postcode
-    }, picture } = employees[index];
-    let date = new Date(dob.date);
-    const modalHTML =
+    let { email, location, name, phone, picture, dob, nat } = employees[index];
+  let month = new Date(dob.date).getMonth();
+  let day = new Date(dob.date).getDay();
+  let year = new Date(dob.date).getFullYear();
 
-        `<div class="modal-container hidden">
-                <div class="modal">
-                    <button type="button" id="modal-close-btn" class="modal-close-btn"><strong>X</strong></button>
-                    <div class="modal-info-container">
-                        <img class="modal-img" src="${picture.large}" alt="profile picture">
-                        <h3 id="name" class="modal-name cap">${name.first} ${name.last}</h3>
-                        <p class="modal-text">${email}</p>
-                        <p class="modal-text cap">${city}</p>
-                        <hr>
-                        <p class="modal-text">${phone}</p>
-                        <p class="modal-text">${street.number} ${street.name}, ${state} ${postcode}</p>
-                        <p class="modal-text">Birthday:${date.getMonth()}/${date.getDate()}/${date.getFullYear()}</p>
-                    </div>
-                </div>
-                <div class="modal-btn-container">
+  // Create the modal window
+  const modalHTML = `
+      <div class="modal-container">
+        <div class="modal">
+            <button type="button" id="modal-close-btn" class="modal-close-btn"><strong>X</strong></button>
+            <div class="modal-info-container">
+                <img class="modal-img" src=${picture.large} alt="profile picture">
+                <h3 id="name" class="modal-name cap">${name.first} ${name.last}</h3>
+                <p class="modal-text">${email}</p>
+                <p class="modal-text cap">${location.city}</p>
+                <hr>
+                <p class="modal-text">${phone}</p>
+                <p class="modal-text">${location.street.number} ${location.street.name}, ${location.city}, ${nat},  ${location.postcode}</p>
+                <p class="modal-text">Birthday: ${day}/${month}/${year}</p>
+            </div>
+            <div class="modal-btn-container">
                     <button type="button" id="modal-prev" class="modal-prev btn">Prev</button>
                     <button type="button" id="modal-next" class="modal-next btn">Next</button>
                 </div>
-            </div>`
+            </div>
+        </div>
+      `;
 
-
-     
+    modalContainer.classList.remove("hidden");
     modalContainer.insertAdjacentHTML('beforeend',modalHTML);
 }
 
@@ -89,5 +91,9 @@ gridContainer.addEventListener('click', e => {
         displayModal(index);
     }
 });
+
+modalClose.addEventListener('click', () => {
+    modalContainer.remove();
+    });
 
 
