@@ -3,13 +3,16 @@ let employees = [];
 const urlAPI = 'https://randomuser.me/api/?results=12&nat=us';
 const gridContainer = document.querySelector(".gallery");
 const modal = document.querySelector("modal");
-
+const body=document.querySelector('body');
 
 fetch(urlAPI)
     .then(res => res.json())
     .then(res => res.results)
     .then(displayEmployees)
     .catch(err => console.log('sorry an error just occurred',error))
+
+//change body background color
+body.style.backgroundColor= 'rgba(176, 189, 209, 0.9)';
 
 
 function displayEmployees(employeeData) {
