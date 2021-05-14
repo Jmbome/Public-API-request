@@ -45,7 +45,7 @@ function displayEmployees(employeeData) {
 
 function displayModal(index) {
     
-    let modalHTML="";
+    
     // use object destructuring make our template literal cleaner
     let { email, location, name, phone, picture, dob, nat } = employees[index];
   let month = new Date(dob.date).getMonth();
@@ -53,7 +53,7 @@ function displayModal(index) {
   let year = new Date(dob.date).getFullYear();
 
   // Create the modal window
-   modalHTML += `
+  const modalHTML = `
       <div class="modal-container">
         <div class="modal">
             <button type="button" id="modal-close-btn" class="modal-close-btn"><strong>X</strong></button>
@@ -74,64 +74,49 @@ function displayModal(index) {
             </div>
         </div>
       `;
-
-      //appends modalHtml to gallery 
+     // appends modalHtml to gallery 
       gridContainer.insertAdjacentHTML('afterend',modalHTML);
    
-    //targets modal container
-    const modalContainer = document.querySelector(".modal-container");
-    
-    
-    //targets closed button in appended modalHTML
-    const modalClose = document.querySelector("#modal-close-btn");
-    
-    //targets next and previous buttons
-    const nextBtn = document.getElementById('modal-next');
-    const prevBtn = document.getElementById('modal-prev');
-
-    const card = document.querySelectorAll('#gallery .card');
-
-    //closes modal display on click
-modalClose.addEventListener('click', () => {
-    modalContainer.remove();
-    });
-
-
-
-
-    nextBtn.addEventListener('click', () => {
-        if (index < card.length - 1) {
-            index += 1;
-            modalContainer.remove();
-            displayModal(index);
-        
-        }else if(index >= card.length - 1) {
-            nextBtn.remove();
-            displayModal(index);
-        }
-
-
-        });
-
-   
-     prevBtn.addEventListener('click', () => {
-        if (index >= 1) {
-            index -= 1;
-            modalContainer.remove();
-            displayModal(index);
-       
-        }else if(index === 0) {
-            prevBtn.remove();
-            displayModal(index);
-        }
-    
-    });
               
   
-               
+       // target elements in the modal window
+  const closeBtn = document.getElementById('modal-close-btn');
+  const nextBtn = document.getElementById('modal-next');
+  const prevBtn = document.getElementById('modal-prev');
+  const modalWindow = document.querySelector('.modal-container');
+ 
 
-           
+  //   Handler close button
+  closeBtn.addEventListener('click', () => {
+    modalWindow.remove();
+  });
 
+  // Handler Next button
+  nextBtn.addEventListener('click', () => {
+    modalWindow.remove();
+
+    if (index >= employees.length - 1) {
+      index = 0;
+      displayModal(index);
+    } else {
+      index++;
+      displayModal(index);
+    }
+  });
+
+  // Handler Prev button
+  prevBtn.addEventListener('click', () => {
+    modalWindow.remove();
+
+    if (index === 0) {
+      prevBtn.style.display='none';
+      displayModal(index);
+    } else {
+      index--;
+      displayModal(index);
+    }
+  });
+            
 }
 
 
