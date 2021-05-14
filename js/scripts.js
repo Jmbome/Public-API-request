@@ -2,7 +2,7 @@
 let employees = [];
 const urlAPI = 'https://randomuser.me/api/?results=12&nat=us';
 const gridContainer = document.querySelector(".gallery");
-const modal = document.querySelector("body");
+const modal = document.querySelector("modal");
 
 
 fetch(urlAPI)
@@ -44,10 +44,7 @@ function displayEmployees(employeeData) {
 
 
 function displayModal(index) {
-    const modalClose = document.querySelector("#modal-close-btn");
-    console.log(modalClose);
-    const modalContainer = document.querySelector(".modal-container");
-    console.log(modalContainer);
+    
     let modalHTML="";
     // use object destructuring make our template literal cleaner
     let { email, location, name, phone, picture, dob, nat } = employees[index];
@@ -57,7 +54,7 @@ function displayModal(index) {
 
   // Create the modal window
    modalHTML += `
-      <div class="modal-container ">
+      <div class="modal-container">
         <div class="modal">
             <button type="button" id="modal-close-btn" class="modal-close-btn"><strong>X</strong></button>
             <div class="modal-info-container">
@@ -78,14 +75,62 @@ function displayModal(index) {
         </div>
       `;
 
-    modalContainer.classList.remove("hidden");
-    modalContainer.insertAdjacentHTML('beforeend',modalHTML);
+      //appends modalHtml to gallery 
+      gridContainer.insertAdjacentHTML('afterend',modalHTML);
+   
+    //targets modal container
+    const modalContainer = document.querySelector(".modal-container");
+    
+    
+    //targets closed button in appended modalHTML
+    const modalClose = document.querySelector("#modal-close-btn");
+    
+    //targets next and previous buttons
+    const nextBtn = document.getElementById('modal-next');
+    const prevBtn = document.getElementById('modal-prev');
 
-    modalClose.addEventListener('click', () => {
-        modalContainer.classList.add('hidden');
+    const card = document.querySelectorAll('#gallery .card');
+
+    //closes modal display on click
+modalClose.addEventListener('click', () => {
+    modalContainer.remove();
+    });
+
+
+
+
+    nextBtn.addEventListener('click', () => {
+        if (index < card.length - 1) {
+            index += 1;
+            modalContainer.remove();
+            displayModal(index);
+        
+        }else if(index >= card.length - 1) {
+            nextBtn.remove();
+            displayModal(index);
+        }
+
+
         });
 
+   
+     prevBtn.addEventListener('click', () => {
+        if (index >= 1) {
+            index -= 1;
+            modalContainer.remove();
+            displayModal(index);
+       
+        }else if(index === 0) {
+            prevBtn.remove();
+            displayModal(index);
+        }
+    
+    });
+              
+  
+               
 
+           
 
 }
 
@@ -102,10 +147,8 @@ gridContainer.addEventListener('click', e => {
         displayModal(index);
     }
 
- 
+  
 
 });
-
-
 
 
