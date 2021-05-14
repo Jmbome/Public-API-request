@@ -38,14 +38,14 @@ function displayEmployees(employeeData) {
                 </div>`
 
     });
+
+    //Append employeeHTML to gallery
     gridContainer.insertAdjacentHTML('beforeend', employeeHTML);
 }
 
 
 
 function displayModal(index) {
-    
-    
     // use object destructuring make our template literal cleaner
     let { email, location, name, phone, picture, dob, nat } = employees[index];
   let month = new Date(dob.date).getMonth();
@@ -116,13 +116,16 @@ function displayModal(index) {
       displayModal(index);
     }
   });
+  
+
+
+  
             
 }
+  //select appended cards in gallery
+const cards = document.querySelectorAll('#gallery .card');
 
-
-gridContainer.addEventListener('click', e => {
-
-    
+  gridContainer.addEventListener('click', e => {
     // make sure the click is not on the gridContainer itself
     if (e.target !== gridContainer) {
         // select the card element based on its proximity to actual element
@@ -131,9 +134,37 @@ gridContainer.addEventListener('click', e => {
         let index = card.getAttribute("data-index");
         displayModal(index);
     }
-
-  
-
 });
 
+
+//*********************SEARCH AREA***************************** */
+
+// Filter Handler
+function searchEmployee(input) {
+    const filteredEmployees = [];
+  
+    employees.forEach((employee) => {
+      //   join the first and the last name
+      const fullName = employee.name.first + employee.name.last;
+      // Checks for input match
+      if (fullName.toUpperCase().includes(input.toUpperCase())) {
+        filteredEmployees.push(employee);
+      }
+    });
+    //  empty the gallery
+    gridContainer.innerHTML = '';
+  
+    //   Generate a new gallery
+    displayEmployees(filteredEmployees);
+  }
+
+  
+  // Handler search
+  const form = document.querySelector('form');
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const input = document.getElementById('search-input');
+    searchEmployee(input.value);
+
+  });
 
