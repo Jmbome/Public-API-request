@@ -108,8 +108,8 @@ function displayModal(index) {
   prevBtn.addEventListener('click', () => {
     modalWindow.remove();
 
-    if (index === 0) {
-      prevBtn.style.display='none';
+    if (index<1) {
+      index= employees.length - 1;
       displayModal(index);
     } else {
       index--;
